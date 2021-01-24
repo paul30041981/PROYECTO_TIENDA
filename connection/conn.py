@@ -6,8 +6,8 @@ class Connection:
         self.table_name = table_name
         self.db = connect(host='127.0.0.1',
                     user='postgres', 
-                    password='mysql', 
-                    database='sistema_colegio')
+                    password='admin', 
+                    database='tienda')
         self.cursor = self.db.cursor()
 
     def execute_query(self, query): # Se usa para ejecutar INSERT, UPDATE, DELETE (DDL)
