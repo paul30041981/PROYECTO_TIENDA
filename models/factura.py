@@ -3,7 +3,7 @@ from connection.conn import Connection
 
 class Factura:
     def __init__(self):
-        self.model = Connection('facturas')
+        self.model = Connection('factura')
 
     def get_facturas(self, order):
         return self.model.get_all(order)

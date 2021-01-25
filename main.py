@@ -1,5 +1,6 @@
 from helpers.menu import Menu
 from controllers.producto import ProductoController
+from controllers.factura import FacturaController
 
 def app():
     try:
@@ -8,7 +9,7 @@ def app():
             Tienda Virtual
         ==========================
         ''')
-        menu_principal = ["Productos","Registrar Factura", "Salir"]
+        menu_principal = ["Productos","Facturas", "Salir"]
         respuesta = Menu(menu_principal).show()
         print(respuesta)
         if respuesta == 1:
@@ -17,7 +18,10 @@ def app():
             if producto.salir:
                 app()
         elif respuesta == 2:
-            pass
+            factura = FacturaController()
+            factura.menu()
+            if factura.salir:
+                app()
   
         print("\n Gracias por utilizar el sistema \n")
     except KeyboardInterrupt:

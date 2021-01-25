@@ -71,7 +71,7 @@ class ProductoController:
 
     def insert_producto(self):
         nombre = input_data('Ingrese el nombre del producto >> ')
-        precio = input_data('Ingrese el precio del producto >> ', 'int')
+        precio = input_data('Ingrese el precio del producto >> ', 'float')
         stock = input_data('Ingrese el Stock del producto >> ', 'int')
         self.producto.insert_producto({
             'nombre': nombre,
@@ -87,7 +87,7 @@ class ProductoController:
 
     def update_producto(self, id_producto):
         nombre = input_data('Ingrese el nuevo nombre del producto >> ')
-        precio = input_data('Ingrese el precio del producto >> ', 'int')
+        precio = input_data('Ingrese el precio del producto >> ', 'float')
         stock = input_data('Ingrese el Stock del producto >> ', 'int')
         self.producto.update_producto({
             'id_producto': id_producto

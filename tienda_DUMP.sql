@@ -29,7 +29,7 @@ CREATE TABLE public.detalle (
     num_factura integer NOT NULL,
     id_producto integer NOT NULL,
     cantidad integer NOT NULL,
-    precio integer NOT NULL
+    precio real NOT NULL
 );
 
 
@@ -64,7 +64,10 @@ ALTER SEQUENCE public.detalle_num_detalle_seq OWNED BY public.detalle.num_detall
 CREATE TABLE public.factura (
     num_factura integer NOT NULL,
     id_cliente character varying(50) NOT NULL,
-    fecha date NOT NULL
+    fecha timestamp without time zone NOT NULL,
+    monto_total real,
+    igv real,
+    precio_total real
 );
 
 
@@ -99,7 +102,7 @@ ALTER SEQUENCE public.factura_num_factura_seq OWNED BY public.factura.num_factur
 CREATE TABLE public.producto (
     id_producto integer NOT NULL,
     nombre character varying(100) NOT NULL,
-    precio integer NOT NULL,
+    precio real NOT NULL,
     stock integer
 );
 
@@ -161,7 +164,8 @@ COPY public.detalle (num_detalle, num_factura, id_producto, cantidad, precio) FR
 -- Data for Name: factura; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.factura (num_factura, id_cliente, fecha) FROM stdin;
+COPY public.factura (num_factura, id_cliente, fecha, monto_total, igv, precio_total) FROM stdin;
+23	40880382	2021-01-25 00:24:18	600	108	708
 \.
 
 
@@ -170,6 +174,7 @@ COPY public.factura (num_factura, id_cliente, fecha) FROM stdin;
 --
 
 COPY public.producto (id_producto, nombre, precio, stock) FROM stdin;
+1	leche	4	50
 \.
 
 
@@ -177,21 +182,21 @@ COPY public.producto (id_producto, nombre, precio, stock) FROM stdin;
 -- Name: detalle_num_detalle_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.detalle_num_detalle_seq', 1, false);
+SELECT pg_catalog.setval('public.detalle_num_detalle_seq', 5, true);
 
 
 --
 -- Name: factura_num_factura_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.factura_num_factura_seq', 1, false);
+SELECT pg_catalog.setval('public.factura_num_factura_seq', 24, true);
 
 
 --
 -- Name: producto_id_producto_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.producto_id_producto_seq', 1, false);
+SELECT pg_catalog.setval('public.producto_id_producto_seq', 2, true);
 
 
 --
@@ -219,11 +224,18 @@ ALTER TABLE ONLY public.producto
 
 
 --
+-- Name: fki_fk_detalle_2; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX fki_fk_detalle_2 ON public.detalle USING btree (id_producto);
+
+
+--
 -- Name: detalle fk_detalle_1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.detalle
-    ADD CONSTRAINT fk_detalle_1 FOREIGN KEY (num_factura) REFERENCES public.factura(num_factura) NOT VALID;
+    ADD CONSTRAINT fk_detalle_1 FOREIGN KEY (num_factura) REFERENCES public.factura(num_factura) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -231,7 +243,7 @@ ALTER TABLE ONLY public.detalle
 --
 
 ALTER TABLE ONLY public.detalle
-    ADD CONSTRAINT fk_detalle_2 FOREIGN KEY (id_producto) REFERENCES public.producto(id_producto) NOT VALID;
+    ADD CONSTRAINT fk_detalle_2 FOREIGN KEY (id_producto) REFERENCES public.producto(id_producto) ON DELETE CASCADE NOT VALID;
 
 
 --

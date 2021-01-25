@@ -3,7 +3,7 @@ from connection.conn import Connection
 
 class Detalle:
     def __init__(self):
-        self.model = Connection('detalles')
+        self.model = Connection('detalle')
 
     def get_detalles(self, order):
         return self.model.get_all(order)
